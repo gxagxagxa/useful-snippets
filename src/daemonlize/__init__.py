@@ -45,7 +45,7 @@ class Daemon:
                 os.kill(pid, SIGTERM)
                 time.sleep(0.5)
         except OSError as e:
-            self._delete_pid_file()
+            self.exit_callback()
             sys.stderr.write('kill {} error: {}'.format(pid, e))
             sys.exit(1)
 
@@ -86,7 +86,7 @@ class Daemon:
         else:
             return True
 
-    def _delete_pid_file(self):
+    def exit_callback(self):
         try:
             os.remove(self.pid_file)
         except OSError as e:
@@ -98,7 +98,7 @@ class Daemon:
             pid_file.write('{}'.format(current_pid))
 
     def _setup_exit(self):
-        atexit.register(self._delete_pid_file)
+        atexit.register(self.exit_callback)
 
     def _setup_permission(self, umask=0):
         os.chdir('/')
