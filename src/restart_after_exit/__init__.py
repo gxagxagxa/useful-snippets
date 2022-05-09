@@ -1,6 +1,7 @@
 import os
 import sys
 from pathlib import Path
+import other_package
 
 current_version = 'v0.1.0'
 
